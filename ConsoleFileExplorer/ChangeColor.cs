@@ -8,9 +8,9 @@ namespace ConsoleFileExplorer
 {
     public class ChangeColor
     {
-        public static void ChangeColors(string color)
+        public static void ChangeColors(ConsoleColor color)
         {
-
+            Console.BackgroundColor = color;
         }
     }
 }

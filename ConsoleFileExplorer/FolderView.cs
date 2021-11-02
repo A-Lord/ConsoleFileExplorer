@@ -20,15 +20,16 @@ namespace ConsoleFileExplorer
         
         public void GetUserInput()
         {
-            if (CurentIndex >= 0 && CurentIndex <= TotalItems +1)
-            {
+            
 
             ConsoleKeyInfo input = Console.ReadKey();
             if (input.Key == ConsoleKey.UpArrow)
-                _curentIndex++;
+                    if (CurentIndex > 0)
+                    CurentIndex--;
             if (input.Key == ConsoleKey.DownArrow)
-                _curentIndex--;
-            }
+                    if (CurentIndex < TotalItems + 1)
+                CurentIndex++;
+            
             
         }
 
@@ -36,11 +37,16 @@ namespace ConsoleFileExplorer
 
         public void PrintList(DirectoryInfo explorer2)
         {
+            Console.Clear();
             var explorer = Directory.GetFileSystemEntries(explorer2.ToString());
             //var explorer = explorer2.GetDirectories();
             //var entries = explorer2.GetFileSystemEntries(Directory.GetCurrentDirectory());
             foreach (string explorerPath in explorer)
             {
+                if (explorerPath == explorer[CurentIndex])
+                {
+                    ChangeColor.ChangeColors(ConsoleColor.Blue);
+                }
                 if (File.Exists(explorerPath))
                 {
                     Console.WriteLine($"-{Path.GetFileName(explorerPath)}");
@@ -49,6 +55,7 @@ namespace ConsoleFileExplorer
                 {
                     Console.WriteLine($"#{Path.GetFileName(explorerPath)}");
                 }
+                Console.ResetColor();
             }
 
         }
