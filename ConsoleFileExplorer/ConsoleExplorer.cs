@@ -12,10 +12,11 @@ namespace ConsoleFileExplorer
         
         public void run()
         {
+            DirectoryInfo explorer = new DirectoryInfo(Directory.GetCurrentDirectory());
             FolderView folderviewer = new FolderView();
             while (true)
             {
-                DirectoryInfo explorer = new DirectoryInfo(Directory.GetCurrentDirectory());
+                folderviewer.TotalItems = explorer.GetFiles().Length;   
                 folderviewer.PrintList(explorer);
                 folderviewer.GetUserInput();
             }

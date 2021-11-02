@@ -10,19 +10,26 @@ namespace ConsoleFileExplorer
     public class FolderView
     {
         private int _curentIndex;
-        public int curentIndex {  get {  return _curentIndex; } set {  _curentIndex = value; } }
+        private int _totalItems = 0;
+        public int TotalItems {  get {  return _totalItems; } set {  _totalItems = value; } }
+        public int CurentIndex {  get {  return _curentIndex; } set {  _curentIndex = value; } }
         public FolderView()
         {
-            curentIndex = 0;
+            CurentIndex = 0;
         }
         
         public void GetUserInput()
         {
+            if (CurentIndex >= 0 && CurentIndex <= TotalItems +1)
+            {
+
             ConsoleKeyInfo input = Console.ReadKey();
             if (input.Key == ConsoleKey.UpArrow)
                 _curentIndex++;
             if (input.Key == ConsoleKey.DownArrow)
                 _curentIndex--;
+            }
+            
         }
 
         
