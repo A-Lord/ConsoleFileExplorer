@@ -48,10 +48,7 @@ namespace ConsoleFileExplorer
             if (input.Key == ConsoleKey.Enter)
                 ChangeFolderView(_folderViewer.CurrentFileName);
             if (input.Key == ConsoleKey.Backspace)
-            {
-                _curentState = ViewState.List;
                 ChangeFolderView(Directory.GetParent(Directory.GetCurrentDirectory()).FullName);
-            }
             if (input.Key == ConsoleKey.C)
                 _curentState = ViewState.CreateFile;
             if (input.Key == ConsoleKey.D)
@@ -59,7 +56,10 @@ namespace ConsoleFileExplorer
         }
         private void ChangeFolderView(string newfolder)
         {
+            if (Directory.Exists(newfolder))
+            {
                 _folderViewer = new FolderView(newfolder);
+            }     
         }
         private void DeleteFile()
         {
