@@ -20,14 +20,13 @@ namespace ConsoleFileExplorer
         public FolderView(string currentDirectory)
         {
             _currentDirectory = currentDirectory;
+            Directory.SetCurrentDirectory(currentDirectory);
             UpdateTotalItems();
             CurentIndex = 0;
         }
         public void UpdateTotalItems()
         {
             TotalItems = Directory.GetFileSystemEntries(CurrentDirectory).Length;
-            Console.WriteLine(TotalItems);
-            Console.ReadKey();
         }
         public void Up()
         {
