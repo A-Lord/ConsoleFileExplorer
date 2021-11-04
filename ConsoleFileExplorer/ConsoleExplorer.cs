@@ -7,32 +7,35 @@ namespace ConsoleFileExplorer
 {
     public class ConsoleExplorer
     {
-        private ViewState _viewState = ViewState.List;
-        //private FolderView _folderViewer = new FolderView(@"E:\ConsoleFileExplorer\ConsoleFileExplorer\");
+        private ViewState _curentState = ViewState.List;
+        private Dictionary<ViewState, Action> _callMethod = new Dictionary<ViewState, Action>();
         private FolderView _folderViewer = new FolderView(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+        public ConsoleExplorer()
+        {
+            _callMethod.Add(ViewState.List, ListNavigaton);
+            _callMethod.Add(ViewState.FileView, GetFileInfo);
+            _callMethod.Add(ViewState.CreateFile, CreateFile);
+            _callMethod.Add(ViewState.DeleteFile, DeleteFile);
+        }
 
-        
         public void run()
         {
             while (true)
             {
-                if (_viewState == ViewState.FileView)
-                {
-                    _folderViewer.ReadFile();
-                    _viewState = ViewState.List;
-                }
-                else if (_viewState == ViewState.CreateFile)
-                {
-                    CreateFile();
-                }
-                else if (_viewState == ViewState.List)
-                {
-                    _folderViewer.PrintList();
-                    GetUserInput();
-                }
+                _callMethod[_curentState]();
             }
         }
 
+        private void ListNavigaton()
+        {
+            _folderViewer.PrintList();
+            GetUserInput();
+        }
+        private void GetFileInfo()
+        {
+            _folderViewer.ReadFile();
+            _curentState = ViewState.List;
+        }
         private void GetUserInput()
         {
             ConsoleKeyInfo input = Console.ReadKey();
@@ -41,25 +44,22 @@ namespace ConsoleFileExplorer
             if (input.Key == ConsoleKey.DownArrow)
                 _folderViewer.Down();
             if (input.Key == ConsoleKey.Spacebar)
-                _viewState = ViewState.FileView;
+                _curentState = ViewState.FileView;
             if (input.Key == ConsoleKey.Enter)
                 ChangeFolderView(_folderViewer.CurrentFileName);
             if (input.Key == ConsoleKey.Backspace)
             {
-                _viewState = ViewState.List;
-                ChangeFolderView(_folderViewer.CurrentDirectory + "\\..");
+                _curentState = ViewState.List;
+                ChangeFolderView(Directory.GetParent(Directory.GetCurrentDirectory()).FullName);
             }
             if (input.Key == ConsoleKey.C)
-                _viewState = ViewState.CreateFile;
+                _curentState = ViewState.CreateFile;
             if (input.Key == ConsoleKey.D)
-                DeleteFile();
+                _curentState = ViewState.DeleteFile;
         }
         private void ChangeFolderView(string newfolder)
         {
-            if (Directory.Exists(newfolder))
-            {
                 _folderViewer = new FolderView(newfolder);
-            }
         }
         private void DeleteFile()
         {
@@ -80,6 +80,7 @@ namespace ConsoleFileExplorer
                 Console.WriteLine("```Tryck på valfri tangent för att gå tillbaka till listan```");
                 Console.ReadKey();
             }
+            _curentState = ViewState.List;
         }
         private void CreateFile()
         {
@@ -110,9 +111,10 @@ namespace ConsoleFileExplorer
                     sw.WriteLine(line);
                 }
             }
-            _viewState = ViewState.List;
+            _curentState = ViewState.List;
             _folderViewer.UpdateTotalItems();
         }
+
     }
 }
 

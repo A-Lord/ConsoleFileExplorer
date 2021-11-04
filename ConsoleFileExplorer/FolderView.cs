@@ -20,6 +20,7 @@ namespace ConsoleFileExplorer
         public FolderView(string currentDirectory)
         {
             _currentDirectory = currentDirectory;
+            Directory.SetCurrentDirectory(currentDirectory);
             UpdateTotalItems();
             CurentIndex = 0;
         }
