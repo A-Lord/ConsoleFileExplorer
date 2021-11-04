@@ -11,34 +11,56 @@ namespace ConsoleFileExplorer
     {
         private int _curentIndex;
         private int _totalItems = 0;
+        private string _currentDirectory;
+        private string _parentDirectory;
+        public string ParentDirectory {  get {  return _parentDirectory; } }
+        public string CurrentDirectory {  get {  return _currentDirectory; } set {  _currentDirectory = value; } }
         public int TotalItems {  get {  return _totalItems; } set {  _totalItems = value; } }
         public int CurentIndex {  get {  return _curentIndex; } set {  _curentIndex = value; } }
-        public FolderView()
+        private string _currentFileName;
+        public string CurrentFileName {  get {  return _currentFileName; } }
+        public FolderView(string currentDirectory)
         {
+            _currentDirectory = currentDirectory;
+            UpdateTotalItems();
             CurentIndex = 0;
         }
-        
-        public void GetUserInput()
+        public void UpdateTotalItems()
+        {
+            TotalItems = Directory.GetFileSystemEntries(CurrentDirectory).Length;
+        }
+        public void Up()
+        {
+           
+            if (CurentIndex > 0)
+                CurentIndex--;
+        }
+        public void Down()
+        {
+                if (CurentIndex < TotalItems - 1)
+                CurentIndex++;
+        }
+        public void ReadFile()
         {
             
 
-            ConsoleKeyInfo input = Console.ReadKey();
-            if (input.Key == ConsoleKey.UpArrow)
-                    if (CurentIndex > 0)
-                    CurentIndex--;
-            if (input.Key == ConsoleKey.DownArrow)
-                    if (CurentIndex < TotalItems + 1)
-                CurentIndex++;
-            
-            
+            if (File.Exists(CurrentFileName))
+            {
+                Console.WriteLine($"Open:");
+                using var fs = new FileStream(CurrentFileName, FileMode.Open, FileAccess.Read);
+                using var sr = new StreamReader(fs);
+                string line = String.Empty;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    Console.WriteLine(line);
+                }
+            }
+
         }
-
-        
-
-        public void PrintList(DirectoryInfo explorer2)
+        public void PrintList()
         {
             Console.Clear();
-            var explorer = Directory.GetFileSystemEntries(explorer2.ToString());
+            string[] explorer = Directory.GetFileSystemEntries(CurrentDirectory);
             //var explorer = explorer2.GetDirectories();
             //var entries = explorer2.GetFileSystemEntries(Directory.GetCurrentDirectory());
             foreach (string explorerPath in explorer)
@@ -46,6 +68,7 @@ namespace ConsoleFileExplorer
                 if (explorerPath == explorer[CurentIndex])
                 {
                     ChangeColor.ChangeColors(ConsoleColor.Blue);
+                    _currentFileName = explorerPath;
                 }
                 if (File.Exists(explorerPath))
                 {
