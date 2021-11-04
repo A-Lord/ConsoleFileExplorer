@@ -76,17 +76,17 @@ namespace ConsoleFileExplorer
             while (emptyLine == false)
             {
                 inputTxt = Console.ReadLine();
-                if (inputTxt == "")
+                if(inputTxt == "")
                 {
                     emptyLine = true;
                 }
+                    
+                
                 else
-                {
-                    txtFileContent.Add(Console.ReadLine());
-                }     
+                    txtFileContent.Add(inputTxt);
             }
             
-            using (StreamWriter sw = File.CreateText(_folderViewer.CurrentDirectory + txtFileName))
+            using (StreamWriter sw = File.CreateText(txtFileName))
             {
                 foreach (string line in txtFileContent)
                 {
