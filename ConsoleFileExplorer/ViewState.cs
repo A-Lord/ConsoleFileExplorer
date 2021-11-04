@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace ConsoleFileExplorer
 {
-    enum ViewState { List,FileView, CreateFile }
+    enum ViewState { List,FileView, CreateFile,DeleteFile }
 }

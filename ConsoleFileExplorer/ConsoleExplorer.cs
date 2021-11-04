@@ -8,31 +8,37 @@ namespace ConsoleFileExplorer
     public class ConsoleExplorer
     {
         private ViewState _viewState = ViewState.List;
-        //private FolderView _folderViewer = new FolderView(@"E:\ConsoleFileExplorer\ConsoleFileExplorer\");
+        private Dictionary<ViewState, Action> Do = new Dictionary<ViewState, Action>();
         private FolderView _folderViewer = new FolderView(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+        public ConsoleExplorer()
+        {
+            Do.Add(ViewState.List, ListNavigaton);
+            Do.Add(ViewState.FileView, GetFileInfo);
+            Do.Add(ViewState.CreateFile, CreateFile);
+            Do.Add(ViewState.DeleteFile, DeleteFile);
+        }
 
-        
         public void run()
         {
             while (true)
             {
-                if (_viewState == ViewState.FileView)
-                {
-                    _folderViewer.ReadFile();
-                    _viewState = ViewState.List;
-                }
-                else if (_viewState == ViewState.CreateFile)
-                {
-                    CreateFile();
-                }
-                else if (_viewState == ViewState.List)
-                {
-                    _folderViewer.PrintList();
-                    GetUserInput();
-                }
+                Do[_viewState]();
             }
         }
 
+
+
+
+        private void ListNavigaton()
+        {
+            _folderViewer.PrintList();
+            GetUserInput();
+        }
+        private void GetFileInfo()
+        {
+            _folderViewer.ReadFile();
+            _viewState = ViewState.List;
+        }
         private void GetUserInput()
         {
             ConsoleKeyInfo input = Console.ReadKey();
@@ -52,7 +58,7 @@ namespace ConsoleFileExplorer
             if (input.Key == ConsoleKey.C)
                 _viewState = ViewState.CreateFile;
             if (input.Key == ConsoleKey.D)
-                DeleteFile();
+                _viewState = ViewState.DeleteFile;
         }
         private void ChangeFolderView(string newfolder)
         {
@@ -80,6 +86,7 @@ namespace ConsoleFileExplorer
                 Console.WriteLine("```Tryck på valfri tangent för att gå tillbaka till listan```");
                 Console.ReadKey();
             }
+            _viewState = ViewState.List;
         }
         private void CreateFile()
         {
@@ -113,6 +120,7 @@ namespace ConsoleFileExplorer
             _viewState = ViewState.List;
             _folderViewer.UpdateTotalItems();
         }
+
     }
 }
 

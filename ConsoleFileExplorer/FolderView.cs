@@ -26,6 +26,8 @@ namespace ConsoleFileExplorer
         public void UpdateTotalItems()
         {
             TotalItems = Directory.GetFileSystemEntries(CurrentDirectory).Length;
+            Console.WriteLine(TotalItems);
+            Console.ReadKey();
         }
         public void Up()
         {
