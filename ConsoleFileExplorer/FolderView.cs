@@ -27,6 +27,10 @@ namespace ConsoleFileExplorer
         public void UpdateTotalItems()
         {
             TotalItems = Directory.GetFileSystemEntries(CurrentDirectory).Length;
+            if (_curentIndex >= TotalItems)
+            {
+                _curentIndex--;
+            }
         }
         public void Up()
         {

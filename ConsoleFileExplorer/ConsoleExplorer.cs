@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 
 namespace ConsoleFileExplorer
 {
@@ -69,8 +70,10 @@ namespace ConsoleFileExplorer
                 ConsoleKeyInfo input = Console.ReadKey();
                 if (input.Key == ConsoleKey.Y)
                 {
+                    FakeLoading();
                     File.Delete(_folderViewer.CurrentFileName);
                     Console.WriteLine($"{Path.GetFileName(_folderViewer.CurrentFileName)} Is deleted");
+                    Thread.Sleep(700);
                 }
             }
             else
@@ -80,6 +83,7 @@ namespace ConsoleFileExplorer
                 Console.WriteLine("```Tryck på valfri tangent för att gå tillbaka till listan```");
                 Console.ReadKey();
             }
+            _folderViewer.UpdateTotalItems();
             _curentState = ViewState.List;
         }
         private void CreateFile()
@@ -113,6 +117,17 @@ namespace ConsoleFileExplorer
             }
             _curentState = ViewState.List;
             _folderViewer.UpdateTotalItems();
+        }
+        private void FakeLoading()
+        {
+            Random timeRando = new();
+            string dotdotdot = ".";
+            for (int i = 0; i < 10; i++)
+            {
+                Console.Write(dotdotdot);
+                if (i % 4 == 0) { Console.Write("\b\b\b   \b\b\b"); }  
+                Thread.Sleep(timeRando.Next(50, 400));
+            }
         }
 
     }
