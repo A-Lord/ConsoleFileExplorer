@@ -66,6 +66,9 @@ namespace ConsoleFileExplorer
         public void PrintList()
         {
             Console.Clear();
+            PrintLogo();
+            Console.WriteLine();
+
             string[] explorer = Directory.GetFileSystemEntries(CurrentDirectory);
             var backGroundColor = ConsoleColor.Black;
             Console.WriteLine("You are in folder: \n" + _currentDirectory + "\n");
@@ -98,12 +101,27 @@ namespace ConsoleFileExplorer
                 Console.ResetColor();
             }
             Console.WriteLine("");
-            for (int i = 0; i < _currentDirectory.Length + 10; i++)
-                {
-                    Console.Write("▀");
-                }
-
+            
+            for (int i = 0; i < _currentDirectory.Length + 10; i++)     
+            { 
+                Console.Write("▀");     
             }
-        
+
+            
+        }
+        private void PrintLogo()
+        {
+          
+            ChangeColor.ChangeTextColor(ConsoleColor.Green, @"______ _ _        _____           _                    " + "\n");
+            ChangeColor.ChangeTextColor(ConsoleColor.Green, @"|  ___(_) |      |  ___|         | |                    " + "\n");
+            ChangeColor.ChangeTextColor(ConsoleColor.Green, @"| |_   _| | ___  | |____  ___ __ | | ___  _ __ ___ _ __ " + "\n");
+            ChangeColor.ChangeTextColor(ConsoleColor.Green, @"|  _| | | |/ _ \ |  __\ \/ / '_ \| |/ _ \| '__/ _ \ '__|" + "\n");
+            ChangeColor.ChangeTextColor(ConsoleColor.Green, @"| |   | | |  __/ | |___>  <| |_) | | (_) | | |  __/ |   " + "\n");
+            ChangeColor.ChangeTextColor(ConsoleColor.Green, @"\_|   |_|_|\___| \____/_/\_\ .__/|_|\___/|_|  \___|_|   " + "\n");
+            ChangeColor.ChangeTextColor(ConsoleColor.Green, @"                           | |                          " + "\n");
+            ChangeColor.ChangeTextColor(ConsoleColor.Green, @"                           |_|                          " + "\n");
+               
+        }
+    
     }
 }

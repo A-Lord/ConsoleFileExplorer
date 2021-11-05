@@ -129,6 +129,7 @@ namespace ConsoleFileExplorer
                 Thread.Sleep(timeRando.Next(50, 400));
             }
         }
+        
 
     }
 }
