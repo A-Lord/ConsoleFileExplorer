@@ -23,6 +23,7 @@ namespace ConsoleFileExplorer
             Directory.SetCurrentDirectory(currentDirectory);
             UpdateTotalItems();
             CurentIndex = 0;
+            ChangeConsoleTitle(_currentDirectory);
         }
         public void UpdateTotalItems()
         {
@@ -31,6 +32,13 @@ namespace ConsoleFileExplorer
             {
                 _curentIndex--;
             }
+        }
+        public void ChangeConsoleTitle(string newTitle)
+        {
+            if (File.Exists(CurrentFileName))
+            Console.Title = "Target File: " + newTitle;
+            if (Directory.Exists(CurrentFileName))
+            Console.Title = "Target Folder: " + newTitle;
         }
         public void Up()
         {
@@ -59,25 +67,43 @@ namespace ConsoleFileExplorer
         {
             Console.Clear();
             string[] explorer = Directory.GetFileSystemEntries(CurrentDirectory);
+            var backGroundColor = ConsoleColor.Black;
+            Console.WriteLine("You are in folder: \n" + _currentDirectory + "\n");
+            for (int i = 0; i < _currentDirectory.Length + 10; i++)
+            {
+                Console.Write("▀");
+            }
+            Console.WriteLine("");
 
             foreach (string explorerPath in explorer)
             {
                 if (explorerPath == explorer[CurentIndex])
                 {
-                    ChangeColor.ChangeColors(ConsoleColor.Blue);
+                    backGroundColor = ConsoleColor.DarkRed;
                     _currentFileName = explorerPath;
+                    ChangeConsoleTitle(Path.GetFileName(CurrentFileName));
                 }
                 if (File.Exists(explorerPath))
                 {
-                    Console.WriteLine($"-{Path.GetFileName(explorerPath)}");
+                    ChangeColor.ChangeTextColor(ConsoleColor.Green, "-");
+                    ChangeColor.ChangeColors(backGroundColor, $"{Path.GetFileName(explorerPath)}");
                 }
                 else if (Directory.Exists(explorerPath))
                 {
-                    Console.WriteLine($"#{Path.GetFileName(explorerPath)}");
+                    ChangeColor.ChangeTextColor(ConsoleColor.Red, "#");
+                    ChangeColor.ChangeColors(backGroundColor, $"{Path.GetFileName(explorerPath)}");
+
                 }
+                backGroundColor = ConsoleColor.Black;
                 Console.ResetColor();
             }
+            Console.WriteLine("");
+            for (int i = 0; i < _currentDirectory.Length + 10; i++)
+                {
+                    Console.Write("▀");
+                }
 
-        }
+            }
+        
     }
 }
