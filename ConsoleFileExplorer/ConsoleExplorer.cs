@@ -72,7 +72,7 @@ namespace ConsoleFileExplorer
                 {
                     FakeLoading();
                     File.Delete(_folderViewer.CurrentFileName);
-                    Console.WriteLine($"{Path.GetFileName(_folderViewer.CurrentFileName)} Is deleted");
+                    Console.WriteLine($"\n{Path.GetFileName(_folderViewer.CurrentFileName)} Is deleted");
                     Thread.Sleep(700);
                 }
             }
